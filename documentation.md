@@ -50,11 +50,19 @@ The range tree is a way to store n-dimensional points of data in a manner that i
 
 There are two implementations of a range tree in this package, one that is mutable and one that is immutable.  The mutable version can be faster, but involves lock contention if the consumer needs to ensure threadsafety.  The immutable version is a copy-on-write range tree that is optimized by only copying portions of the rangetree on write and is best written to in batches.  Operations on the immutable version are slower, but it is safe to read and write from this version at the same time from different threads.
 
-Although rangetrees are often represented as BBSTs as described above, the n-dimensional nature of this rangetree actually made the design easier to implement as a sparse n-dimensional array.
+Although we have a classic implementation of RTrees as BBSTs as described above, the n-dimensional nature of the rangetree has inspired an implementation as a sparse n-dimensional array.
 
 ### Future
 
-Unite both implementations of the rangetree under the same interface.  The implementations (especially the immutable one) could use some futher performance optimizations.
+Unite both implementations of the rangetree under the same interface.  The implementations (especially the immutable one) could use some futher performance optimizations. Implement the classic version of the RTree with algorithms for nearest neighbor search as well as tree traversal.
+
+## B+ Tree
+
+See README.md
+
+## Fibonacci Heap
+
+See README.md
 
 ## Set
 

@@ -49,6 +49,10 @@ and ensure goroutines quit so objects can be GC'd.  Threadsafety is achieved
 using only CAS operations making this queue quite fast.  Benchmarks can be found
 in that package.
 
+#### Fibonacci Heap
+
+This should implement a standard Fibonacci heap with a find minimum, delete minimum, insert, decrease key and merge operations. It has an amortized constant complexity for most operations (find minimum, insert, decrease-key, merge). It does a deletion for O(log(n)). In practice the constant factors are large, so Fibonacci heaps could be slower than Pairing heaps, depending on usage. Benchmarks - attached.
+
 #### Range Tree
 
 Useful to determine if n-dimensional points fall within an n-dimensional range.
@@ -57,6 +61,10 @@ sorted list of points as this proved to be simpler and faster than attempting a
 traditional range tree while saving space on any dimension greater than one.
 Inserts are typical BBST times at O(log n^d) where d is the number of
 dimensions.
+
+We also have a conventional range tree implementation that can be used to accelerate nearest neighbor searches for various distance metrics in an n-dimensional context. It should be able to group nearby objects and represent them with their minimum bounding rectangle. It should also retain all properties of a balanced binary search tree. A k-nearest-neighbor search for a general L^p norm is beneficial for many algorithms based on the k nearest neighbors, for example the Local Outlier Factor.
+
+Benchmarks - attached.
 
 #### Set
 Our Set implementation is very simple, accepts items of type `interface{}` and
@@ -136,14 +144,15 @@ More details can be found in that package.
 
 #### B+ Tree
 
-Initial implementation of a B+ tree.  Delete method still needs added as well as
-some performance optimization.  Specific performance characteristics can be
+Initial implementation of a B+ tree. Specific performance characteristics can be
 found in that package.  Despite the theoretical superiority of BSTs, the B-tree
 often has better all around performance due to cache locality.  The current
 implementation is mutable, but the immutable AVL tree can be used to build an
 immutable version.  Unfortunately, to make the B-tree generic we require an
 interface and the most expensive operation in CPU profiling is the interface
 method which in turn calls into runtime.assertI2T.  We need generics.
+
+The result of this work should be a unit-tested, working B+ tree with mutable and immutable variants. Optimisation will not yet be guaranteed. Benchmarks - attached. Profiler output can also be found in the btree directory.
 
 #### Immutable B Tree
 A btree based on two principals, immutablability and concurrency. 
