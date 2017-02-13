@@ -11,9 +11,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Special thanks to  Keith Schwarz (htiek@cs.stanford.edu),
-whose code and documentation have been used as a reference
-for the algorithm implementation.
+Special thanks to  Keith Schwarz (htiek@cs.stanford.edu), whose code and documentation have been used as a reference for the algorithm implementation.
 http://www.keithschwarz.com/interesting/code/?dir=fibonacci-heap
 */
 
@@ -69,14 +67,10 @@ http://www.keithschwarz.com/interesting/code/?dir=fibonacci-heap
 
 package fibheap
 
-/******************************************
- ************** INTERFACE *****************
- ******************************************/
-
 // The FloatingFibonacciHeap is an implementation of a fibonacci heap
-// with only floating-point priorities and no user data attached.
+// with only priorities and no user data attached.
 type FloatingFibonacciHeap interface {
-	// Adds and element to the heap
+	// Adds elements to the heap
 	Enqueue(priority float64) float64
 	// Returns the minimum element in the heap
 	Min() float64
@@ -97,98 +91,35 @@ type FloatingFibonacciHeap interface {
 	// TODO: How do we deal with doubles?
 	Delete(priority float64) float64
 	// Will merge two heaps
-	Merge(otherHeap *FloatingFibonacciHeap) FloatingFibonacciHeap
+	Merge(otherHeap FloatingFibonacciHeap) FloatingFibonacciHeap
 }
 
-/******************************************
- ************** END INTERFACE *************
- ******************************************/
-
-type fibHeap struct {
-	min  *entry // The minimal element
-	size uint
+// The FibonacciHeap is an implementation of the Fibonacci heap with user data
+// attached to each node as a type-agnostic interface.
+//
+// Describes the methods available for a Fibonacci Heap
+//   value - The stored user value
+//   priority - The value's priority
+type FibonacciHeap interface {
+	// Adds elements to the heap
+	Enqueue(value interface{}, priority float64) (interface{}, float64)
+	// Returns the minimum element in the heap
+	Min() (interface{}, float64)
+	// Is the heap empty?
+	IsEmpty() bool
+	// The number of elements in the heap
+	Size() uint
+	// Will merge two heaps
+	Merge(treeOne, treeTwo FibonacciHeap) FibonacciHeap
+	// Removes and returns the minimal element
+	// in the heap
+	DequeueMin() (interface{}, float64)
+	// Decreases the key of the given element
+	// and sets it to the new given priority
+	DecreaseKey(value interface{}, priority float64) bool
+	// Deletes the given element in the heap
+	// Will use the internal pointer to the value
+	// as an identifier - make sure it is pointing
+	// to the same place in memory it was when inserted.
+	Delete(value interface{})
 }
-
-type entry struct {
-	degree                    int
-	isMarked                  bool
-	next, prev, child, parent *entry
-	priority                  float64
-}
-
-// ACTUAL CODE
-
-func NewFloatFibHeap() FloatingFibonacciHeap { return &fibHeap{nil, 0} }
-
-func (heap *fibHeap) Enqueue(priority float64) float64 {
-	//result := newEntry(priority)
-
-	// Merge singleton list with heap
-
-	heap.size++
-	return priority
-}
-
-func (heap *fibHeap) Min() float64 {
-	if heap.IsEmpty() {
-		return -42
-	}
-	return heap.min.priority
-}
-
-func (heap *fibHeap) IsEmpty() bool {
-	return heap.size == 0
-}
-
-func (heap *fibHeap) Size() uint {
-	return heap.size
-}
-
-func (heap *fibHeap) DequeueMin() float64 {
-	return 42.0
-}
-
-func (heap *fibHeap) DecreaseKey(oldPriority, newPriority float64) float64 {
-	return newPriority
-}
-
-func (heap *fibHeap) Delete(priority float64) float64 {
-	return priority
-}
-
-/*
- * Given two Fibonacci heaps, returns a new Fibonacci heap that contains
- * all of the elements of the two heaps.  Each of the input heaps is
- * destructively modified by having all its elements removed.  You can
- * continue to use those heaps, but be aware that they will be empty
- * after this call completes.
- */
-func (heap *fibHeap) Merge(other *FloatingFibonacciHeap) FloatingFibonacciHeap {
-	//result := new(FibHeap)
-	return NewFloatFibHeap()
-
-	//result.size = fibHeap.size + other.size
-	//result.min = fibHeap.mergeLists(other)
-	//return result
-}
-
-/*func (fibHeap *FibHeap) delMin() *entry {
-	if fibHeap.IsEmpty() {
-		return nil
-	}
-
-	// TODO: fix
-	defer func() { fibHeap.size-- }()
-	minElem := fibHeap.min
-	return nil
-}
-
-// HELPER FUNCTIONS
-
-func newEntry(priority float64) entry {
-	result := new(entry)
-	result.next = &result
-	result.prev = &result
-	result.priority = priority
-	return result
-}*/
