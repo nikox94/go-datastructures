@@ -51,7 +51,7 @@ in that package.
 
 #### Fibonacci Heap
 
-This should implement a standard Fibonacci heap with a find minimum, delete minimum, insert, decrease key and merge operations. It has an amortized constant complexity for most operations (find minimum, insert, decrease-key, merge). It does a deletion for O(log(n)). In practice the constant factors are large, so Fibonacci heaps could be slower than Pairing heaps, depending on usage. Benchmarks - attached.
+A standard Fibonacci heap providing the usual operations. Can be useful in executing Dijkstra or Prim's algorithms in the theoretically minimal time. Also useful as a general-purpose priority queue. The special thing about Fibonacci heaps versus other heap variants is the cheap decrease-key operation. This heap has a constant complexity for find minimum, insert and merge of two heaps, an amortized constant complexity for decrease key and O(log(n)) complexity for a deletion or dequeue minimum. In practice the constant factors are large, so Fibonacci heaps could be slower than Pairing heaps, depending on usage. Benchmarks - in the project subfolder. The heap has not been designed for thread-safety.
 
 #### Range Tree
 
@@ -156,7 +156,7 @@ The result of this work should be a unit-tested, working B+ tree with mutable an
 
 #### Immutable B Tree
 A btree based on two principals, immutablability and concurrency. 
-Somewhat slow for single value lookups and puts, it is very fast for bulk operations.  
+Somewhat slow for single value lookups and puts, it is very fast for bulk operations.
 A persister can be injected to make this index persistent.
 
 #### Ctrie
