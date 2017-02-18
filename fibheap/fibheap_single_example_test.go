@@ -1,6 +1,6 @@
 package fibheap
 
-// Example Test for the Fibonacci heap with floats
+// Example usage of the Fibonacci heap
 
 import (
 	"fmt"
