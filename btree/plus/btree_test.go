@@ -278,6 +278,43 @@ func TestTreeRandomOrderQuery(t *testing.T) {
 	}
 }
 
+func TestTreeSpecificDeletionOrder(t *testing.T) {
+	ids := []int{6, 2, 9, 0, 3, 4, 7, 1, 8, 5}
+	keys := make(keys, 0, len(ids))
+
+	for _, id := range ids {
+		keys = append(keys, newMockKey(id))
+	}
+
+	tree := newBTree(4)
+	tree.Insert(keys...)
+
+	iter := tree.Iter(newMockKey(4))
+	result := iter.exhaust()
+
+	assert.Len(t, result, 6)
+	for i, key := range result {
+		assert.Equal(t, newMockKey(i+4), key)
+	}
+
+	// Delete keys
+
+	tree.Delete(newMockKey(5))
+	tree.Delete(newMockKey(4))
+	tree.Delete(newMockKey(0))
+	tree.Delete(newMockKey(3))
+	tree.Delete(newMockKey(1))
+	tree.Delete(newMockKey(2))
+
+	iter = tree.Iter(newMockKey(6))
+	result = iter.exhaust()
+
+	assert.Len(t, result, 4)
+	for i, key := range result {
+		assert.Equal(t, newMockKey(i+6), key)
+	}
+}
+
 func TestTreeGet(t *testing.T) {
 	keys := constructRandomMockKeys(100)
 	tree := newBTree(64)
